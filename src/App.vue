@@ -18,10 +18,13 @@
     </header>
     <section>
       <ul class="bk-menu-list">
-        <li>
-          <img :src='getImgUrl("disease.png")' alt="">
-          <h3>疾病</h3>
-        </li>
+        <router-link to="./diseaselist">
+          <li>
+            <img :src='getImgUrl("disease.png")' alt="">
+            <h3>疾病</h3>
+         </li>
+        </router-link>
+       
         <li>
           <img :src='getImgUrl("symption.png")' alt="">
           <h3>症状</h3>
@@ -88,24 +91,57 @@
 
     </section>
     <section class="expert-info">
-      <p>专家委员会</p>
+      <p class="expert-info-title">专家委员会</p>
       <ul class="expert-list">
         <li>
-          <img src="" alt="">
+          <img :src='getImgUrl("gaorunlin.jpeg")'  alt="">
           <p class="expert-name">高润霖院士</p>
-          <div class="expert-hospital">
-            <p>中国医学科学院</p>  
-            <p>阜外医院</p>  
+          <div>
+            <p class="expert_hospital-info">中国医学科学院</p>  
+            <p class="expert_hospital-info">阜外医院</p>  
+          </div>
+        </li>
+         <li>
+          <img :src='getImgUrl("gaorunlin.jpeg")'  alt="">
+          <p class="expert-name">高润霖院士</p>
+          <div>
+            <p class="expert_hospital-info">中国医学科学院</p>  
+            <p class="expert_hospital-info">阜外医院</p>  
+          </div>
+        </li>
+         <li>
+          <img :src='getImgUrl("gaorunlin.jpeg")'  alt="">
+          <p class="expert-name">高润霖院士</p>
+          <div>
+            <p class="expert_hospital-info">中国医学科学院</p>  
+            <p class="expert_hospital-info">阜外医院</p>  
+          </div>
+        </li>
+         <li>
+          <img :src='getImgUrl("gaorunlin.jpeg")'  alt="">
+          <p class="expert-name">高润霖院士</p>
+          <div>
+            <p class="expert_hospital-info">中国医学科学院</p>  
+            <p class="expert_hospital-info">阜外医院</p>  
+          </div>
+        </li>
+         <li>
+          <img :src='getImgUrl("gaorunlin.jpeg")'  alt="">
+          <p class="expert-name">高润霖院士</p>
+          <div>
+            <p class="expert_hospital-info">中国医学科学院</p>  
+            <p class="expert_hospital-info">阜外医院</p>  
           </div>
         </li>
       </ul>
     </section>
-
+    <bkfooter></bkfooter>
   </div>
   
 </template>
 
 <script>
+import bkfooter from './components/bk_footer'
 export default {
   data() {
     return {
@@ -116,6 +152,9 @@ export default {
     getImgUrl(imgStr){
       return require('./assets/images/' + imgStr);
     }
+  },
+  components: {
+    bkfooter: bkfooter
   }
 }
 </script>
@@ -245,6 +284,36 @@ export default {
     .bg
       wh(100%,100%)
 
-
+  .expert-info
+    border-top 10px solid #f5f5f5
+    .expert-info-title
+      height 2.7rem
+      line-height 2.7rem
+      text-align center
+      font-size .8rem
+      color #333
+  .expert-list 
+    paddding 0 .75rem .75rem
+    overflow auto
+    white-space nowrap
+    li
+       width 5.2rem
+       text-align center
+       display inline-block
+       vertical-align top
+       img 
+        wh(2.75rem, 2.75rem)
+        border-radius 50%
+        margin-bottom .25rem
+  .expert-name
+    font-size: 0.7rem;
+    color: #424242;
+    line-height: 1.1rem;
+  .expert_hospital-info
+    font-size: 0.55rem;
+    color: #999;
+    line-height: 0.75rem;
+    margin-top: 0.15rem;
+    white-space: normal;
 
 </style>
