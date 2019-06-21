@@ -1,10 +1,14 @@
 <template>
-  <div>
+  <div id='main'>
+    <bksearch ref="bksearch"></bksearch>
     <header>
-      <img :src='getImgUrl("default_photo.png")' class="user_icon"  alt="">
+      <router-link to="/user/mine">
+          <img :src='getImgUrl("default_photo.png")' class="user_icon"  alt="">
+      </router-link>
+    
       <img class="logo" :src='getImgUrl("logo.png")' alt="">
       <img class="logo_my" :src='getImgUrl("logo_my.png")' alt="">
-      <div class="baike-search">
+      <div class="baike-search" @click="openSearch">
         <img :src='getImgUrl("search.png")' alt="">
         <span>搜索疾病、症状</span>
       </div>
@@ -141,6 +145,7 @@
 </template>
 
 <script>
+import bksearch from './components/bk-search'
 import bkfooter from './components/bk_footer'
 export default {
   data() {
@@ -151,16 +156,25 @@ export default {
   methods: {
     getImgUrl(imgStr){
       return require('./assets/images/' + imgStr);
+    },
+    openSearch(){
+      this.$refs.bksearch.openSearch();
     }
+
   },
   components: {
-    bkfooter: bkfooter
+    bkfooter: bkfooter,
+    bksearch: bksearch
   }
 }
 </script>
 
 <style lang="stylus" scoped>
   @import "./style/mixin.styl"
+#main
+  width 17.5rem
+  margin 0 auto
+  overflow-x hidden
   header 
     background : -webkit-radial-gradient(top,#35bbff 2%,#2d94e9 50%)
     position relative

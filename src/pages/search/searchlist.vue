@@ -18,11 +18,20 @@
               <li>医院</li>
           </div>
       </div>
-      <div class="result-content"></div>
+      <div class="result-content">
+          <bk-synthesis></bk-synthesis>
+          <bk-baike></bk-baike>
+          <bk-video></bk-video>
+      </div>
     </div>
 </template>
 
 <script>
+import bk_synthesis from './../../components/search_result/synthesis'
+import bk_baike from './../../components/search_result/baike'
+import bk_video from './../../components/search_result/video'
+import bk_article from './../../components/search_result/article'
+import bk_hospital from './../../components/search_result/hospital'
 export default {
     name:'searchlist',
     data(){
@@ -32,11 +41,15 @@ export default {
     },
     methods: {
       cancelClick(){
-
+          this.$router.go(-1);
       }
     },
     components:{
-      
+      'bk-synthesis': bk_synthesis,
+      'bk-baike': bk_baike,
+      'bk-video': bk_video,
+      'bk_article': bk_article,
+      'bk_hospital': bk_hospital
     }
 
 }

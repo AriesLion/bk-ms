@@ -3,50 +3,102 @@
         <div class="head">
             <div class="left">
                  <img class="search-img" src="https://pic.baikemy.com/ms/images/search.png" alt="">
-                 <input class="search-input" type="text" placeholder="搜索疾病、症状">
-                 <img class="input-clear" src="https://pic.baikemy.com/ms/images/search-clear.png" alt="">
+                 <input @keyup.enter="onSubmit"  v-model="searchText" class="search-input" type="text" placeholder="搜索疾病、症状">
+                 <img :class="isShowClearText ? '': 'display_none'" @click="clearSearchText()" class="input-clear" src="https://pic.baikemy.com/ms/images/search-clear.png" alt="">
             </div>
             <span @click="cancelClick" class="cancel">取消</span>
         </div>
         <div class="recommend">
             <p class="tag-title">热门推荐</p>
             <ul class="tag-list">
-                <li>手足口病</li>
-                <li>糖尿病</li>
-                <li>艾滋病</li>
-                <li>抑郁症</li>
-                <li>肺结核</li>
-                <li>早泄</li>
-                <li>痤疮</li>
-                <li>痛风</li>
+                <li v-for='(item,index) in hotSearchList' :key="item" @click="clickHotSearch(index)">
+                    {{item}}
+                </li>
             </ul>
         </div>
         <div class="record">
             <p class="history-title">
                 <span>搜索记录</span>
-                <img src="https://pic.baikemy.com/ms/images/delete.png" alt="">
+                <img @click="removeAllHistory()"  src="https://pic.baikemy.com/ms/images/delete.png" alt="">
             </p>
             <ul class="history-list">
-                <li><p>糖尿病</p><img class="record-close" src="https://pic.baikemy.com/ms/images/close.png" alt=""></li>
-                <li><p>糖尿病</p><img class="record-close" src="https://pic.baikemy.com/ms/images/close.png" alt=""></li>
+                <li v-for="(item, index) in searchHistoryList" :key="item">
+                    <p>{{item}}</p>
+                    <img @click="removeHistory(index)" class="record-close" src="https://pic.baikemy.com/ms/images/close.png" alt="">
+                </li>
             </ul>
         </div>
     </div>
 </template>
 
 <script>
+import { getLocalStore,setLocalStore,} from '../utils/common.js';
 export default {
     data(){
         return {
-            isShowSearch: false
+            isShowSearch: false,
+            searchText: '',
+            isShowClearText: false,
+            hotSearchList: ['手足口病','糖尿病','艾滋病','抑郁症','肺结核','早泄','痤疮','痛风'],
+            searchHistoryList: []
         }
     },
+
+    mounted(){
+        let list = getLocalStore('searchhistory');
+        if(list){
+           this.searchHistoryList = JSON.parse(list);
+        }
+        if (this.searchText.length > 0){
+            this.isShowClearText = true;
+        }
+
+    },
+
     methods: {
+        onSubmit(){
+            alert(this.searchText);
+        },
+
+        clearSearchText(){
+            this.searchText = '';
+        },
+
         cancelClick(){
             this.isShowSearch = false;
         },
         openSearch() {
             this.isShowSearch = true;
+        },
+        clickHotSearch(index){
+            let searchKey = this.hotSearchList[index];
+            this.storeLocalHistory(searchKey);
+            this.$router.push({
+                path:'/searchlist',
+                query:{
+                   title: searchKey
+                }
+            });
+            // alert(this.hotSearchList[index]);
+        },
+        removeHistory(index){
+            this.searchHistoryList.splice(index,1);
+            setLocalStore('searchhistory',JSON.stringify(this.searchHistoryList));
+        },
+        removeAllHistory(){
+            this.searchHistoryList = [];
+            setLocalStore('searchhistory');
+        },
+        storeLocalHistory(searchKey){
+            var index = this.searchHistoryList.indexOf(searchKey);
+            if (index != -1){
+                this.searchHistoryList.splice(index,1);
+            }
+            this.searchHistoryList.unshift(searchKey);
+            if(this.searchHistoryList.length > 10){
+               this.searchHistoryList.slice(0,10);
+            }
+            setLocalStore('searchhistory',this.searchHistoryList);
         }
     }
 }
@@ -55,7 +107,8 @@ export default {
 <style lang="stylus" scoped>
 @import "../style/mixin.styl"
     #search-box
-        wh(100%,100%)
+        wh(18.75rem,100%)
+        margin 0 auto
         z-index 10
         overflow-y auto
         overflow-x hidden
@@ -128,6 +181,9 @@ export default {
             li
                 padding .5rem 0
                 border-bottom 1px solid #ebebeb
+                display flex
+                justify-content center
+                align-items center
             p
                 font-size .8rem
                 color #333333
@@ -137,12 +193,6 @@ export default {
                 width 16rem
             img 
                 wh(.5rem,.5rem)
-                float right
-                position relative
-                top -.5rem
-
-            
-
-
+ 
 </style>
 
